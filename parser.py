@@ -1,4 +1,11 @@
 import csv
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+cred = credentials.Certificate("key.json")
+firebase_admin.initialize_app(cred)
+db = firestore.client()
 
 class sub: 
     def __init__(self, cik, name, sic, ticker): 
@@ -9,6 +16,15 @@ class sub:
     
     def __str__(self):
         return f" {self.cik}  {self.name} {self.sic} {self.ticker}"
+    
+    def to_json(self):
+        data = {
+            u'cik': self.cik,
+            u'name': self.name,
+            u'sic': self.sic,
+            u'ticker': self.ticker,
+        }
+        return data    
 
 
 
@@ -31,12 +47,15 @@ def cik_from_sub():
     return subs
 
 
+def populate_sub():
+    test = cik_from_sub()
+    for a in test:
+        db.collection(u'sub').document(a.cik).set(a.to_json())
 
-test = cik_from_sub()
 
-#print(len(test))
-for a in test:
-    print(a)
+populate_sub()
+
+    
     
 
 
