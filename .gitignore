@@ -6,3 +6,4 @@ num.txt
 key.json
 desktop.ini
 tickers.json
+__pycache__/tickerparser.cpython-311.pyc
