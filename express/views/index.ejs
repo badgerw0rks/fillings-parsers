@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <ul>
+    <p>Welcome to <%= title %></p>
+    <% for (var key in companies) {%>
+      <!-- <li><%=JSON.stringify(companies[key]) %></li> -->
+      <% var f = companies[key].cik_str %>
+      <% var g = "0".repeat(10 - f.toString().length) %>
+
+      <li><a href="/ren/CIK<%= g+f %>.json"><%= g+f %></a></li>
+    <% } %>
+    </ul>
+  </body>
+</html>

@@ -7,3 +7,6 @@ key.json
 desktop.ini
 tickers.json
 __pycache__/tickerparser.cpython-311.pyc
+express/node_modules/*
+express/package-lock.json
+express/package-lock.json
