@@ -11,9 +11,10 @@
     <% for (var key in companies) {%>
       <!-- <li><%=JSON.stringify(companies[key]) %></li> -->
       <% var f = companies[key].cik_str %>
+      <% var name = companies[key].ticker + " " + companies[key].title %>
       <% var g = "0".repeat(10 - f.toString().length) %>
 
-      <li><a href="/ren/CIK<%= g+f %>.json"><%= g+f %></a></li>
+      <li><a href="/ren/CIK<%= g+f %>.json"><%= name %></a></li>
     <% } %>
     </ul>
   </body>
