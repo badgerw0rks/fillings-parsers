@@ -2,40 +2,88 @@
 <html>
   <head>
     <title><%= name.cik %></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel='stylesheet' href='/stylesheets/style.css' />
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <script type="text/javascript">
-          google.charts.load('current', {'packages':['corechart']});
-          google.charts.setOnLoadCallback(drawChart);
-    
-          function drawChart(data) {
-            
-    
-            var options = {
-              title: 'Company Performance',
-              curveType: 'function',
-              legend: { position: 'bottom' }
-            };
-    
-            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-    
-            chart.draw(data, options);
-          }
-        </script>
   </head>
   <body>
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Choose a concept
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <% var data = {} %>
+        <% //console.log(name) %>
+        <% for (var key in name["ifrs-full"]) { %>
+          
+
+        <% } %>
+        <% for (var key in name["us-gaap"]) { %>
+          <% //console.log("TEST" + JSON.stringify(name["us-gaap"][key])) %>
+          <% var d = JSON.stringify(name["us-gaap"][key]) %>
+          <% d = d.replace(/'/g, 'A'); %>
+          <% //console.log("d" + d) %>
+          <% data[key] = JSON.parse(d) %>
+          <% var l = "?concept=" + key %>
+          <a class="dropdown-item" onclick="drawChart(&#34;<%- key %>&#34;)" href="#<%- l %>">
+            <span class="badge badge-success">US-GAAP</span>
+            <%= key %>
+          </a>
+        <% } %>
+        <% //console.log("TEST" + JSON.stringify(data)) %>
+      </div>
+    </div>
     <ul>
-      <% var data = [] %>
-      <% for (var key in name["ifrs-full"]) { %>
-        <% data.append(name["ifrs-full"][key]) %>
-      <li><%= key %></li>
-      <li><%= JSON.stringify(name["ifrs-full"][key]) %></li>
-      <% } %>
-      <% for (var key in name["us-gaap"]) { %>
-      <li><%= key %></li>
-      <li><%= JSON.stringify(name["us-gaap"][key]) %></li>
-      <% } %>
     </ul>
     <div id="curve_chart" style="width: 900px; height: 500px"></div>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <% if (data != undefined) { %>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      var tmp;
+      
+      function drawChart(ind) {
+        var dd = [['Date', 'Dollars']];
+        
+        
+        if(ind != undefined && ind != undefined){
+          tmp = '<%- JSON.stringify(data) %>'
+          tmp3 = JSON.parse(tmp)
+          tmp4 = tmp3[ind]["units"]["USD"]
+          console.log("tmp4 data is "+ tmp4 )
+          for (const a of tmp4){
+            var c = [a.end, a.val]
+            //console.log(c)
+            dd.push(c) 
+            d = google.visualization.arrayToDataTable(dd);
+          }
+        }else{
+        d = google.visualization.arrayToDataTable([
+          ['Date', 'Dollars'],
+          ['2004',  1000],
+          ['2005',  1170],
+          ['2006',  660],
+          ['2007',  1030]
+        ]);
+
+        }
+        var options = {
+          title: 'Company Performance',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+        chart.draw(d, options);
+      }
+    </script>
+    <% } %>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   </body>
 </html>
