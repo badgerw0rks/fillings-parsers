@@ -38,47 +38,80 @@
     </div>
     <ul>
     </ul>
-    <div id="curve_chart" style="width: 900px; height: 500px"></div>
+    <div id="curve_chart" style="width: 100%; height:85vh;"></div>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <% if (data != undefined) { %>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
       var tmp;
-      
+       
+      var rows = {}
+      var cols = {}
+
+
+
       function drawChart(ind) {
-        var dd = [['Date', 'Dollars']];
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+        var dd = new google.visualization.DataTable(); 
+        dd.addColumn('date', 'Date');
         
-        
-        if(ind != undefined && ind != undefined){
+        if(ind != undefined && dd != undefined){
+          for (const property in cols) {
+            dd.addColumn('number', property);
+          }
+          dd.addColumn('number', ind);
+          cols[ind] = ind
+          //dd.addRows(dt)
+          //dt = []
           tmp = '<%- JSON.stringify(data) %>'
           tmp3 = JSON.parse(tmp)
           tmp4 = tmp3[ind]["units"]["USD"]
-          console.log("tmp4 data is "+ tmp4 )
+          //console.log("tmp4 data is "+ tmp4 )
+          //dd[0].push(ind)
+          console.log("columns are "+ dd.getNumberOfColumns())
           for (const a of tmp4){
-            var c = [a.end, a.val]
-            //console.log(c)
-            dd.push(c) 
-            d = google.visualization.arrayToDataTable(dd);
+            if(rows[a.end] != undefined){
+              rows[a.end].data[ind] = a.val
+            }else{
+              rows[a.end] =  {data :{}}
+              rows[a.end].data[ind] = a.val
+            }
           }
+          for (const property in rows) {
+            var all = []
+            all.push(new Date(property))
+            for (const property2 in rows[property].data) {
+              all.push(rows[property].data[property2])
+            }
+            console.log("all " + all.toString())
+            dd.addRow(all)
+          }
+          
+          console.log("all " + all.toString())
+          console.log("rows " + rows)
         }else{
-        d = google.visualization.arrayToDataTable([
-          ['Date', 'Dollars'],
-          ['2004',  1000],
-          ['2005',  1170],
-          ['2006',  660],
-          ['2007',  1030]
+        dd = google.visualization.arrayToDataTable([
+          ['2004'],
+          ['2005'],
+          ['2006'],
+          ['2007']
         ]);
 
         }
         var options = {
           title: 'Company Performance',
           curveType: 'function',
-          legend: { position: 'bottom' }
+          legend: { position: 'bottom' },
+          series:{
+            0:{targetAxisIndex:0},
+            1:{targetAxisIndex:1},
+            2:{targetAxisIndex:1}
+          }
         };
 
-        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-        chart.draw(d, options);
+        
+        chart.draw(dd, options);
       }
     </script>
     <% } %>
