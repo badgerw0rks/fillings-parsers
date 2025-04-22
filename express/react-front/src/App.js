@@ -1,6 +1,10 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import  Companies  from './components/Companies' 
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 
 export default function App() {
@@ -13,7 +17,7 @@ useEffect(() => {
   axios.get('http://localhost:3001/')
     .then(function (response) {
       // handle success
-      console.log(response);
+      setCompanies(response.data)
     })
     .catch(function (error) {
       // handle error
@@ -22,10 +26,16 @@ useEffect(() => {
     .finally(function () {
       // always executed
     });
-  },[])
+  },[setCompanies])
 
 
   return (
-    <div>App</div>
+    <Container>
+      <Row>
+        <Col>
+          <Companies companies={companies}></Companies>
+        </Col>
+      </Row>
+    </Container>
   )
 }

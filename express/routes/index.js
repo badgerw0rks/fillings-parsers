@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const fs = require('fs');
 const SEC = "https://data.sec.gov/api/xbrl/companyfacts/"
-var cors = require('cors')
 
 const app= express();
 
