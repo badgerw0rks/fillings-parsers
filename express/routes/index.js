@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const SEC = "https://data.sec.gov/api/xbrl/companyfacts/"
+const SEC = "https://data.sec.gov/api/xbrl/companyfacts/CIK"
 
 const app= express();
 
@@ -22,22 +22,28 @@ router.get('/', function(req, res, next) {
 });
 });
 
-router.get('/ren/:cik', function(req, res, next) {
+router.get('/company/:cik', function(req, res, next) {
+
+  console.log(req.params.cik)
   
 
   //let rawdata = fs.readFileSync('../../DATA/companyfacts/'+req.params.cik);
 
-const uri = SEC + req.params.cik
+var pre  = "0".repeat(10 - req.params.cik.toString().length)
+
+const uri = SEC + pre + req.params.cik +'.json'
 
 console.log('calling ' + uri)
 
 fetch(uri)
-  .then((response) => response.text())
+  .then((response) => response.json())
   .then((body) => {
-    
-let xbrl = JSON.parse(body);
 
-res.render('ren', {name: xbrl["facts"]} );
+    res.json(body)
+    
+// let xbrl = JSON.parse(body);
+
+// res.render('ren', {name: xbrl["facts"]} );
       //console.log(body);
 });
 

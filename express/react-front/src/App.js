@@ -1,10 +1,10 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import  Companies  from './components/Companies' 
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { Routes, Route, Link } from 'react-router-dom';
+import { Navbar, Nav, Container } from 'react-bootstrap';
+import  Companies  from './components/Companies'
+import CompanyPage from './components/CompanyPage';
 
 
 export default function App() {
@@ -30,12 +30,27 @@ useEffect(() => {
 
 
   return (
-    <Container>
-      <Row>
-        <Col>
-          <Companies companies={companies}></Companies>
-        </Col>
-      </Row>
-    </Container>
+    <>
+      {/* Navbar from react-bootstrap */}
+      <Navbar bg="dark" variant="dark" expand="lg">
+        <Container>
+          <Navbar.Brand as={Link} to="/">MySite</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ms-auto">
+              <Nav.Link as={Link} to="/">Home</Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+
+      {/* Page Content */}
+      <Container className="mt-4">
+        <Routes>
+          <Route path="/" element={<Companies companies={companies} />} />
+          <Route path="/company/:id" element={<CompanyPage />} />
+        </Routes>
+      </Container>
+    </>
   )
 }
