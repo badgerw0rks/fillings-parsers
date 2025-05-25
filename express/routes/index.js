@@ -22,16 +22,24 @@ router.get('/', function(req, res, next) {
 });
 });
 
+
+
+
+
 router.get('/company/:cik', function(req, res, next) {
 
-  console.log(req.params.cik)
+
+  const {params={} , body }=req;
+
+  console.log(params)
+    console.log(body)
   
 
   //let rawdata = fs.readFileSync('../../DATA/companyfacts/'+req.params.cik);
 
-var pre  = "0".repeat(10 - req.params.cik.toString().length)
+var pre  = "0".repeat(10 - params?.cik.toString().length)
 
-const uri = SEC + pre + req.params.cik +'.json'
+const uri = SEC + pre + params?.cik+'.json'
 
 console.log('calling ' + uri)
 

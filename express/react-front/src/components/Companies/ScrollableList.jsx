@@ -3,7 +3,7 @@ import { ListGroup, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 const ScrollableList = ({ companies }) => {
-    console.log(companies)
+   
   return (
     <Card style={{ maxHeight: '90vh', overflowY: 'auto' }}>
       <ListGroup variant="flush">

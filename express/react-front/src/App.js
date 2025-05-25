@@ -3,20 +3,21 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Routes, Route, Link } from 'react-router-dom';
 import { Navbar, Nav, Container } from 'react-bootstrap';
-import  Companies  from './components/Companies'
-import CompanyPage from './components/CompanyPage';
+import  Companies  from './components/Companies/Companies'
+import CompanyPage from './components/CompanyPage/CompanyPage';
 
 
-export default function App() {
+const  App=({url}) =>{
 
 const [companies, setCompanies] = useState(null);
+const [title, setTitle] = useState('Home')
 
-useEffect(() => { 
 
 
-  axios.get('http://localhost:3001/')
+const apiCall=(url)=>{
+ return axios.get(url)
     .then(function (response) {
-      // handle success
+      console.log("!!! companies bken call")
       setCompanies(response.data)
     })
     .catch(function (error) {
@@ -24,9 +25,23 @@ useEffect(() => {
       console.log(error);
     })
     .finally(function () {
-      // always executed
+  
     });
-  },[setCompanies])
+}
+
+
+useEffect(() => { 
+  apiCall('http://localhost:3001/')
+  },[url])
+
+
+const setTitleByRoute=(newTitle)=>{
+
+setTitle(newTitle);
+
+
+}
+
 
 
   return (
@@ -34,7 +49,7 @@ useEffect(() => {
       {/* Navbar from react-bootstrap */}
       <Navbar bg="dark" variant="dark" expand="lg">
         <Container>
-          <Navbar.Brand as={Link} to="/">MySite</Navbar.Brand>
+          <Navbar.Brand as={Link} to="/">{title}</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
@@ -45,12 +60,14 @@ useEffect(() => {
       </Navbar>
 
       {/* Page Content */}
-      <Container className="mt-4">
+      <Container fluid>
         <Routes>
-          <Route path="/" element={<Companies companies={companies} />} />
-          <Route path="/company/:id" element={<CompanyPage />} />
+          <Route path="/" element={<Companies companies={companies}  />} />
+          <Route path="/company/:id" element={<CompanyPage  setTitle={setTitle}/>} />
         </Routes>
       </Container>
     </>
   )
 }
+
+export default  React.memo(App)

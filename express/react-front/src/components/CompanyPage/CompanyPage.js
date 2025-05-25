@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import UsgaapList from './UsgaapList';
 
-function CompanyPage() {
+function CompanyPage( {setTitle} ) {
   const { id } = useParams();  // Grabs the id from the URL
   const [companyData, setCompanyData] = useState(null);
 
   useEffect(() => {
+
+
+     setTitle(companyData?.entityName)
     // Simulate fetching company data by ID (you can replace this with an API call)
     const fetchData = async () => {
       // Example: Fetch data for the company
@@ -15,18 +19,15 @@ function CompanyPage() {
     };
 
     fetchData();
-  }, [id]);  // Re-run when the id changes
+  }, [companyData]);  // Re-run when the id changes
 
   if (!companyData) {
     return <div>Loading...</div>;
   } else {
-    console.log(companyData)
+    //console.log(companyData.facts["us-gaap"])
+   
     return (
-      <div>
-        {/* <h1>{companyData.name}</h1>
-        <p>{companyData.description}</p> */}
-        {/* You can display more details from the company data here */}
-      </div>
+      <UsgaapList data={companyData.facts["us-gaap"]}></UsgaapList>
     );
   }
 
