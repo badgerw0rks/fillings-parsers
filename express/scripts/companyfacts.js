@@ -35,9 +35,9 @@ try {
     const data_obj = JSON.parse(data)
 
     const result = await companyfacts.insertOne(data_obj);
-//console.log(
-//   `A document was inserted with the _id: ${result.insertedId}`,
-//);
+    // console.log(
+    //   `A document was inserted with the _id: ${result.insertedId}`,
+    // );
 
 
     //console.log(data);

@@ -1,3 +1,5 @@
+## file to get cik from sub.txt
+
 class sub: 
     def __init__(self, cik, name, sic, ticker): 
         self.cik = cik 
