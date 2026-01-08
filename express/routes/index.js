@@ -4,7 +4,10 @@ const SEC = "https://data.sec.gov/api/xbrl/companyfacts/CIK"
 
 const app= express();
 
-/* GET home page. */
+const fs = require('node:fs');
+
+/* OLD EJS CODE
+GET home page. */
 // router.get('/', function(req, res, next) {
 //   let rawdata = fs.readFileSync('../../DATA/company_tickers.json');
 //   let companies = JSON.parse(rawdata);
@@ -13,13 +16,20 @@ const app= express();
 //   //res.render('index', { title: 'Express', companies: companies });
 // });
 
-router.get('/', function(req, res, next) {
-
-  fetch('https://www.sec.gov/files/company_tickers.json')
-  .then((response) => response.json())
-  .then((body) => {
-    res.json(body)
+//download latest from https://www.sec.gov/files/company_tickers.json
+var ct = {}
+fs.readFile('./company_tickers.json', 'utf8', (err, data) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+  ct = data
+  //console.log(data);
 });
+
+
+router.get('/', function(req, res, next) {
+    res.json(ct)
 });
 
 

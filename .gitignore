@@ -11,3 +11,4 @@ express/node_modules/*
 express/package-lock.json
 express/package-lock.json
 express/package-lock.json
+express/company_tickers.json
